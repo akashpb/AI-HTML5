@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+	<head>
+		<title>Propositional Logic</title>
+		<meta name="description" content="Simple propositional logic solvers: 
+			easy to hack and experiment with.">
+		<meta name="author" content="Akash and Chaitanya (emails)">
+		<script>
+			function gid(x) { return document.getElementById(x); }
+		</script>
+		<script src="proplog_ui.js"></script>
+		<script src="proplog_parse.js"></script>
+		<script src="proplog_dpll.js"></script>
+		<script src="proplog_convert.js"></script>
+
+	</head>
+	<body style="font-family: arial,helvetica,sans-serif; color: #333333; margin: 20px;">
+
+	<h2>Solve a propositional formula </h2>
+		<form>
+		
+			<textarea class="form-control" id="propinput" 
+				style="height: 200px; width: 800px; margin-bottom: 20px;"
+			>(a -&gt; b) &amp; a &amp; -b</textarea>
+
+			<p>
+			<div style="display: inline-block;">
+					
+			<!-------- solve the formula ----------- -->
+			
+			<button class="btn btn-small btn-danger" 
+			onclick="proplog_ui.solve(gid('propinput').value, 'dpll_better', 'no trace'); return false;"
+				style="height: 36px;">Solve</button>
+			using DPLL
+			<p>
+			
+			<!-------- build a table or form ----------- -->
+			<button class="btn btn-small btn-danger" 
+			onclick="proplog_ui.build(gid('propinput').value,gid('build_select').value); return false;"
+				style="height: 36px;">Build</button> a
+			<select style="height: 36px;" id="build_select">      
+				<option value="truth_table">truth table</option>
+				<option value="cnf">clause normal form</option>      
+				<option value="parse_tree">parse tree</option>
+			</select>   
+			<p>
+						
+		</form>
+			
+	<h2>Result</h2>
+	<div id="result"></div>
+
+	</body>
+</html>
