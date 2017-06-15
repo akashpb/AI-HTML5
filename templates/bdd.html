@@ -11,6 +11,26 @@
 
 <!-- you should always add your stylesheet (css) in the head tag so that it starts loading before the page html is being displayed -->	
 	<link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}" type="text/css" />
+	<script>
+
+		function run(){
+			var oReq = new XMLHttpRequest();
+			oReq.open("get", 'localhost:5000/get_image', true );        
+			oReq.responseType = "blob";
+			oReq.onload = function ( oEvent )
+			{
+				var blob = oReq.response;
+				var imgSrc = URL.createObjectURL( blob );                        
+				var $img = $( '<img/>', {                
+					"alt": "test image",
+					"src": imgSrc
+				}).appendTo( $( '#robdd' ) );
+				window.URL.revokeObjectURL( imgSrc );
+			};
+			oReq.send( null );
+		}
+
+	</script>
 	
 </head>
 <body>
@@ -37,7 +57,7 @@
                   id = "myText2"
                   value = "" />
         </p>
-       <button type="submit" value="Submit">Submit</button>
+       <button type="submit" value="Submit" onclick="run()">Submit</button>
 
       </fieldset>
     </form>
@@ -45,7 +65,7 @@
     <fieldset>
         <legend>Output</legend>
 
-        <div class="boxed">
+        <div class="boxed" id="robdd">
   			Text
 		</div> 
 

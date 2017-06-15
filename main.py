@@ -1,7 +1,21 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, send_file
+from pyeda.inter import *
+from graphviz import Source
+from random import randrange
 
+# from bdd import bdd
 
 app = Flask(__name__)
+filename = ''
+def bdd_img():
+	a, b, c = map(bddvar, 'abc')
+	f = a & b | a & c | b & c
+	gv = Source(f.to_dot())
+	gv.format = "png"
+	# img = gv.render('render_img_name'+ str(randrange(0, 100)))
+	global filename
+	filename = str(gv.render('bdd_img'))
+	print(filename)
 
 @app.route('/')
 def main():
@@ -9,11 +23,16 @@ def main():
 
 @app.route('/bdd')
 def bdd():
-	return render_template("rough.html")
+	return render_template("bdd.html")
+
+@app.route('/get_image', methods = ['GET'])
+def get_image():
+	bdd_img()
+	return send_file(filename, mimetype='image/png')
 
 @app.route('/proplog')
 def proplog():
 	return render_template("proplog.html")
 
-# if __name__ == '__main__':
-# 	app.run(debug=True)
+if __name__ == '__main__':
+	app.run(debug=True)
