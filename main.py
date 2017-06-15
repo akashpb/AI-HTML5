@@ -1,4 +1,4 @@
-from flask import Flask, render_template, send_file
+from flask import Flask, render_template, send_file, request
 from pyeda.inter import *
 from graphviz import Source
 from random import randrange
@@ -7,9 +7,13 @@ from random import randrange
 
 app = Flask(__name__)
 filename = ''
-def bdd_img():
-	a, b, c = map(bddvar, 'abc')
-	f = a & b | a & c | b & c
+def bdd_img(exp):
+	# a, b, c = map(bddvar, 'abc')
+	# exp = "a & b | a & c | b & c | d"
+	print(exp)
+	exp = expr(exp)
+	f = expr2bdd(exp)
+
 	gv = Source(f.to_dot())
 	gv.format = "png"
 	# img = gv.render('render_img_name'+ str(randrange(0, 100)))
@@ -27,7 +31,10 @@ def bdd():
 
 @app.route('/get_image', methods = ['GET'])
 def get_image():
-	bdd_img()
+	exp = str(request.args.get("expr"))
+	exp = exp.replace("*", "&")
+	print(exp)
+	bdd_img(exp)
 	return send_file(filename, mimetype='image/png')
 
 @app.route('/proplog')
