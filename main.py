@@ -23,7 +23,7 @@ def bdd_img(exp):
 
 @app.route('/')
 def main():
-    return 'Hello, World!'
+    return render_template("main.html")
 
 @app.route('/bdd')
 def bdd():
