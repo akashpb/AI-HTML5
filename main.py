@@ -9,7 +9,7 @@ def main():
 
 @app.route('/bdd')
 def bdd():
-	render_template("rough.html")
+	return render_template("rough.html")
 
 @app.route('/proplog')
 def proplog():
