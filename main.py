@@ -9,10 +9,10 @@ def main():
 
 @app.route('/bdd')
 def bdd():
-	pass
+	render_template("rough.html")
 @app.route('/proplog')
 def proplog():
-	return render_template("rough.html")
+	return render_template("proplog.html")
 
 # if __name__ == '__main__':
 # 	app.run(debug=True)
