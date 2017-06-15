@@ -4,36 +4,31 @@
 
 <!-- your webpage info goes here -->
 
-    <title>Project</title>
+    <title>Truth table to Boolean Expression</title>
 	
 	<meta name="author" content="AP and CV" />
 	<meta name="description" content="" />
 
 <!-- you should always add your stylesheet (css) in the head tag so that it starts loading before the page html is being displayed -->	
 	<link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}" type="text/css" />
-	<script>
-
+	
+  <script>
 		function run(){
-			var exp = document.getElementById("expr").value;
-			// exp = exp.replace("&", "*", -1);
-			exp = exp.split('&').join('*');
-			console.log(exp);
+			var ttvalues = document.getElementById("ttvalues").value;
+			var x = document.getElementById("x").value;
 			var oReq = new XMLHttpRequest();
-			oReq.open("get", 'http://localhost:5000/get_robdd_imagee?expr=' + exp, true );        
-			oReq.responseType = "blob";
+			oReq.open("get", 'http://localhost:5000/get_expr_from_tt?ttvalues=' + ttvalues + '&x=' + x, true );        
 			oReq.onreadystatechange = function(){
 			if (this.readyState == 4 && this.status == 200){
 
-				var img = document.getElementById('robdd');
-				var url = window.URL || window.webkitURL;
-				img.src = url.createObjectURL(this.response);
+				var op = document.getElementById('output');
+				console.log(oReq.responseText);
+				op.innerHTML = oReq.responseText;
 				}
 			}
 			oReq.send();
 		}
-
 	</script>
-	
 </head>
 <body>
 
@@ -41,39 +36,41 @@
 
 	<div id="page">
 		<div id="logo">
-			<h1>Project</h1>
+			<h1>Boolean Algebra</h1>
 		</div>
 		
 		<div id="content">
-			 <fieldset>
+
+		<fieldset>
         <legend>Input</legend>
         <p>
-          <label>Enter the Expression</label>
+          <label>Enter number of variables</label>
           <input type = "text"
-                 id = "expr"
+                 id = "x"
                  value = "" />
         </p>
         <p>
-          <label>Ordering</label>
+          <label>Enter values of the function's truth table</label>
           <input type = "text"
-                  id = "ordering"
+                  id = "ttvalues"
                   value = "" />
         </p>
+       
        <button type="submit" value="Submit" onclick="run()">Submit</button>
+      
 
       </fieldset>
+
+
     </form>
 
+    <br><br>
+
     <fieldset>
-        <legend>Output</legend>
+        <legend>Output - Boolean expression of the input function</legend>
 
-        <div class="boxed" >
-			<img id="robdd">
-		</div> 
-
-		 <div class="boxed1">
-  			Tree
-		</div> 
+      	<div id = "output">
+		</div>
 
 	</fieldset>
 

@@ -4,79 +4,75 @@
 
 <!-- your webpage info goes here -->
 
-    <title>Project</title>
+    <title>Boolean Expressions</title>
 	
 	<meta name="author" content="AP and CV" />
 	<meta name="description" content="" />
 
 <!-- you should always add your stylesheet (css) in the head tag so that it starts loading before the page html is being displayed -->	
 	<link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}" type="text/css" />
+	
 	<script>
-
 		function run(){
 			var exp = document.getElementById("expr").value;
-			// exp = exp.replace("&", "*", -1);
-			exp = exp.split('&').join('*');
 			console.log(exp);
+			exp = exp.split('&').join('*');
 			var oReq = new XMLHttpRequest();
-			oReq.open("get", 'http://localhost:5000/get_robdd_imagee?expr=' + exp, true );        
-			oReq.responseType = "blob";
+			oReq.open("get", 'http://localhost:5000/get_min_expr?expr=' + exp, true );        
 			oReq.onreadystatechange = function(){
 			if (this.readyState == 4 && this.status == 200){
 
-				var img = document.getElementById('robdd');
-				var url = window.URL || window.webkitURL;
-				img.src = url.createObjectURL(this.response);
+				var op = document.getElementById('output');
+				console.log(oReq.responseText);
+				op.innerHTML = oReq.responseText;
 				}
 			}
 			oReq.send();
 		}
-
 	</script>
-	
 </head>
 <body>
 
 <!-- webpage content goes here in the body -->
 
+
 	<div id="page">
 		<div id="logo">
-			<h1>Project</h1>
+			<h1>Minimize boolean expressions</h1>
 		</div>
 		
 		<div id="content">
-			 <fieldset>
+
+		<fieldset>
         <legend>Input</legend>
         <p>
-          <label>Enter the Expression</label>
+          <label>Enter boolean expression to minimize = </label>
           <input type = "text"
                  id = "expr"
                  value = "" />
+       
         </p>
-        <p>
-          <label>Ordering</label>
-          <input type = "text"
-                  id = "ordering"
-                  value = "" />
-        </p>
-       <button type="submit" value="Submit" onclick="run()">Submit</button>
+       
+        <button type="submit" value="Submit" onclick="run()">Submit</button>
+
 
       </fieldset>
+
+
     </form>
+
+
+    <br><br>
 
     <fieldset>
         <legend>Output</legend>
 
-        <div class="boxed" >
-			<img id="robdd">
-		</div> 
+        <div id = "output">
 
-		 <div class="boxed1">
-  			Tree
-		</div> 
+		</div>
 
 	</fieldset>
-
+	
     
 		</div>
 		<div id="footer">
