@@ -20,10 +20,7 @@
 		
 		Takes:
 			txt - the propositional problem in DIMACS or formula syntax
-			solver_algorithm - one of "dpll_better","dpll_naive",
-				"truth_table_naive","truth_table_better","resolution_naive","resolution_better"
-			trace_method - one of "none", "html", "text", "console"
-		
+			solver_algorithm - "dpll_better"
 		Does:
 			- calls parsers and converters on the input txt
 			- runs the selected prover on the parsed and converted txt
@@ -37,6 +34,7 @@
 	}  
 
 	function solve_aux(txt,solver_algorithm,trace_method) {
+		console.log("lkdshgklsh");
 		var parsed,converted,maxvar,clauses,origvars,i,res,txt,stats,res;
 		start_time=new Date().getTime();  
 		parsed=proplog_parse.parse(txt);
@@ -90,6 +88,7 @@
 	exports.build = function (txt,build_select) {
 		exports.clear_output(); // we need to wait a bit after that
 		// avoid doing html dom change in parallel to building
+		console.log("lkdshgklsh");
 		window.setTimeout(function(){build_aux(txt,build_select)},100);
 	}
 
@@ -101,7 +100,9 @@
 			return;
 		}
 		res=proplog_parse.parse(txt);
-		//show_process("parsing finished");
+		console.log(res);
+		c.log("lkdshgklsh");
+		window.alert("dhghd");		//show_process("parsing finished");
 		if (res[0]==="error") {
 			show_result("Parse error: "+res[1]);
 			return;
@@ -151,6 +152,7 @@
 	}
 
 	function append_to_place(txt,placeid) {
+		console.log("lkdshgklsh");
 		var place=document.getElementById(placeid);
 		var newcontent=document.createElement('div');
 		newcontent.innerHTML=txt;

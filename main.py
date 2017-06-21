@@ -1,7 +1,8 @@
 from flask import Flask, render_template, send_file, request
-from pyeda.inter import *
+from pyeda.inter import expr
 from graphviz import Source
 from random import randrange
+from utils import *
 
 app = Flask(__name__)
 filename = ''
@@ -40,12 +41,12 @@ def truthtabletobool():
 	return render_template("truthtabletobool.html")
 
 @app.route('/get_robdd_image', methods = ['GET'])
-def get_image():
+def get_robdd_image():
 	exp = str(request.args.get("expr"))
 	exp = exp.replace("*", "&")
 	print(exp)
 	bdd_img(exp)
-	return send_file("../images" + filename, mimetype='image/png')
+	return send_file(filename, mimetype='image/png')
 
 @app.route('/get_min_expr', methods = ['GET'])
 def get_min_expr():

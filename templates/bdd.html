@@ -19,7 +19,7 @@
 			exp = exp.split('&').join('*');
 			console.log(exp);
 			var oReq = new XMLHttpRequest();
-			oReq.open("get", 'http://localhost:5000/get_robdd_imagee?expr=' + exp, true );        
+			oReq.open("get", 'http://localhost:5000/get_robdd_image?expr=' + exp, true );        
 			oReq.responseType = "blob";
 			oReq.onreadystatechange = function(){
 			if (this.readyState == 4 && this.status == 200){
