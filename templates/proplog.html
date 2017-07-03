@@ -7,12 +7,16 @@
 		<script>
 			function gid(x) { return document.getElementById(x); }
 			var c = window.console;
+			var result;
 		</script>
 		<script src="{{ url_for('static', filename = 'proplog/proplog_ui.js') }}"></script>
 		<script src="{{ url_for('static', filename = 'proplog/proplog_parse.js') }}"></script>
 		<script src="{{ url_for('static', filename = 'proplog/proplog_dpll.js') }}"></script>
 		<script src="{{ url_for('static', filename = 'proplog/proplog_convert.js') }}"></script>
-
+		<script>
+			// result = res;
+			// console.log("Test" + result);
+		</script>
 		<link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}" type="text/css" />
 	</head>
 	<body style="font-family: arial,helvetica,sans-serif; color: #333333; margin: 20px;">

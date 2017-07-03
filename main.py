@@ -1,5 +1,5 @@
 from flask import Flask, render_template, send_file, request
-from pyeda.inter import expr
+from expr import *
 from graphviz import Source
 from random import randrange
 from utils import *

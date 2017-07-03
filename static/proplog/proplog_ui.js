@@ -1,7 +1,7 @@
 
 
 (function(exports) {
-"use strict";
+
 	// ====== module start =========
 	
 	// configuration for printing to html:
@@ -34,7 +34,7 @@
 	}  
 
 	function solve_aux(txt,solver_algorithm,trace_method) {
-		console.log("lkdshgklsh");
+		console.log("solve_aux");
 		var parsed,converted,maxvar,clauses,origvars,i,res,txt,stats,res;
 		start_time=new Date().getTime();  
 		parsed=proplog_parse.parse(txt);
@@ -88,11 +88,11 @@
 	exports.build = function (txt,build_select) {
 		exports.clear_output(); // we need to wait a bit after that
 		// avoid doing html dom change in parallel to building
-		console.log("lkdshgklsh");
 		window.setTimeout(function(){build_aux(txt,build_select)},100);
 	}
 
 	function build_aux(txt,build_select) {
+		console.log("build_aux");
 		var res;
 		start_time=new Date().getTime();  
 		if (!txt) {
@@ -101,8 +101,7 @@
 		}
 		res=proplog_parse.parse(txt);
 		console.log(res);
-		c.log("lkdshgklsh");
-		window.alert("dhghd");		//show_process("parsing finished");
+		//show_process("parsing finished");
 		if (res[0]==="error") {
 			show_result("Parse error: "+res[1]);
 			return;
@@ -112,7 +111,11 @@
 				res.shift();
 			} 
 			res=JSON.stringify(res);
+			console.log(res);
 			res=res.replace(/"/g,"")
+			console.log(res);
+			result = res;
+			console.log("Test" + result);
 			//res=proplog_convert.parsed_print(res,[]);    
 		} else if (build_select=="truth_table") {
 				res=proplog_convert.print_truthtable(res);
@@ -152,7 +155,6 @@
 	}
 
 	function append_to_place(txt,placeid) {
-		console.log("lkdshgklsh");
 		var place=document.getElementById(placeid);
 		var newcontent=document.createElement('div');
 		newcontent.innerHTML=txt;

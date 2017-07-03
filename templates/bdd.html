@@ -11,11 +11,116 @@
 
 <!-- you should always add your stylesheet (css) in the head tag so that it starts loading before the page html is being displayed -->	
 	<link rel="stylesheet" href="{{ url_for('static', filename = 'style.css') }}" type="text/css" />
+	<script src="{{ url_for('static', filename = 'proplog/proplog_parse.js') }}"></script>
 	<script>
+		var temp;
+		var exp;
+		var res;
+		var count;
+		var noOfTimesClicked;
+
+		function parse(){
+			res = proplog_parse.parse(exp);
+		}
+
+		function getCount(array){
+			var c = 1;
+			var flag = true;
+			var curr;
+			curr = array[1];;
+			while(flag == true){
+				if(typeof(curr) == "object"){
+					curr = curr[1];
+					c++;
+				}
+				else {
+					flag = false;
+				}
+			}
+			return c;
+		}
+
+		function genExpression(array){
+			var expression;
+			var op;
+			var variable1 = array[1];
+			var variable2 = array[2];
+			if(array[0] == 'V'){
+				op = '|'
+			}
+			else {
+				op = '&'
+			}
+
+			if(typeof(variable1) == "object"){
+				expression = genExpression(variable1) + op + variable2;
+			}
+			else if(typeof(variable2) == "object"){
+				expression = genExpression(variable2) + op + variable1;
+			}
+			else{
+				expression = variable1 + op + variable2;
+			}
+			
+			return expression;
+		}
+
+		function getNextMinExpression(array){
+			var index;
+			var curr = array[1];
+			var expression;
+			for(index = count - noOfTimesClicked; index > 0; index--){
+				curr = curr[1];
+			}
+			if(index < 0){
+				curr = array;
+			}
+			console.log("curr: " + curr);
+			if(typeof(curr) != "object"){
+				expression = curr;
+			}
+			else{
+				expression = genExpression(curr);
+			}
+			console.log(expression);
+			return expression;
+		}
+
+		function next(){
+			exp = document.getElementById("expr").value;
+			if(exp != temp){
+				temp = exp;
+				parse();
+				count = getCount(res);
+				noOfTimesClicked = 0;
+			}
+			// var test = genExpression(res);
+			noOfTimesClicked++;
+			exp = getNextMinExpression(res);
+
+			console.log("exp: "+exp);
+			console.log(noOfTimesClicked);
+			exp = exp.split('&').join('*');
+			var oReq = new XMLHttpRequest();
+			oReq.open("get", 'http://localhost:5000/get_robdd_image?expr=' + exp, true );        
+			oReq.responseType = "blob";
+			oReq.onreadystatechange = function(){
+			if (this.readyState == 4 && this.status == 200){
+
+				var img = document.getElementById('robdd');
+				var url = window.URL || window.webkitURL;
+				img.src = url.createObjectURL(this.response);
+				}
+			}
+			oReq.send();
+
+			console.log(res);
+			console.log(count);
+			console.log("_________________________________________");
+		}
 
 		function run(){
-			var exp = document.getElementById("expr").value;
-			// exp = exp.replace("&", "*", -1);
+			exp = document.getElementById("expr").value;
 			exp = exp.split('&').join('*');
 			console.log(exp);
 			var oReq = new XMLHttpRequest();
@@ -60,6 +165,7 @@
                   value = "" />
         </p>
        <button type="submit" value="Submit" onclick="run()">Submit</button>
+	   <button type="submit" value="Submit" onclick="next()">Next</button>
 
       </fieldset>
     </form>
