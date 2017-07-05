@@ -12,18 +12,15 @@ filename_reorder = ''
 filename_reorder_special = ''
 
 def bdd_img(exp):
-	# a, b, c = map(bddvar, 'abc')
-	# exp = "a & b | a & c | b & c | d"
-	print(exp)
+	# print(exp)
 	exp = expr(exp)
 	f = expr2bdd(exp)
 
 	gv = Source(f.to_dot())
 	gv.format = "png"
-	# img = gv.render('render_img_name'+ str(randrange(0, 100)))
 	global filename
-	filename = str(gv.render('../images/bdd_img'))
-	print(filename)
+	filename = str(gv.render('../images/bdd_img' + str(randrange(0, 100))))
+	# print(filename)
 
 
 def bdd_img_reorder(exp, order):
@@ -35,9 +32,10 @@ def bdd_img_reorder(exp, order):
 		bdd.add_var(key)
 	u = bdd.add_expr(exp)
 	bdd.collect_garbage()
-	bdd.dump('../images/bdd_reorder.png')
+	rand = str(randrange(0, 100))
+	bdd.dump('../images/bdd_reorder' + rand + '.png')
 	global filename_reorder
-	filename_reorder = '../images/bdd_reorder.png'
+	filename_reorder = '../images/bdd_reorder' + rand + '.png'
 
 def bdd_img_special_order(exp, order):
 	bdd = _bdd.BDD()
@@ -47,14 +45,15 @@ def bdd_img_special_order(exp, order):
 	for key, value in order_dict.items():
 		bdd.add_var(key)
 	u = bdd.add_expr(exp)
-	print(order_dict)
-	print(bdd.vars)
+	# print(order_dict)
+	# print(bdd.vars)
 	_bdd.reorder(bdd, order_dict)
-	print(bdd.vars)
+	# print(bdd.vars)
 	bdd.collect_garbage()
-	bdd.dump('../images/bdd_reorder_special.png')
+	rand = str(randrange(0, 100))
+	bdd.dump('../images/bdd_reorder_special' + rand + '.png')
 	global filename_reorder_special
-	filename_reorder_special = '../images/bdd_reorder_special.png'
+	filename_reorder_special = '../images/bdd_reorder_special' + rand + '.png'
 
 @app.route('/')
 def main():
@@ -84,7 +83,7 @@ def truthtabletobool():
 def get_robdd_image():
 	exp = str(request.args.get("expr"))
 	exp = exp.replace("*", "&")
-	print(exp)
+	# print(exp)
 	bdd_img(exp)
 	return send_file(filename, mimetype='image/png')
 
@@ -93,7 +92,7 @@ def get_robdd_reorder_image():
 	exp = str(request.args.get("expr"))
 	order = str(request.args.get("order"))
 	exp = exp.replace("*", "&")
-	print(exp)
+	# print(exp)
 	bdd_img_reorder(exp, order)
 	return send_file(filename_reorder, mimetype='image/png')
 
@@ -102,8 +101,8 @@ def get_robdd_reorder_special_image():
 	exp = str(request.args.get("expr"))
 	order = str(request.args.get("order"))
 	exp = exp.replace("*", "&")
-	print(exp)
-	print(order)
+	# print(exp)
+	# print(order)
 	bdd_img_special_order(exp, order)
 	return send_file(filename_reorder_special, mimetype='image/png')
 
@@ -127,4 +126,4 @@ def get_expr_from_tt():
 	return str(f1m)
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run()

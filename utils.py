@@ -47,7 +47,7 @@ class BDDNode:
 	BDD node instances are managed internally.
 	"""
 	def __init__(self, root, lo, hi):
-		print("Class BDDNode")
+		# print("Class BDDNode")
 		self.root = root
 		self.lo = lo
 		self.hi = hi
@@ -58,7 +58,7 @@ BDDNODEONE = _NODES[(-2, None, None)] = BDDNode(-2, None, None)
 
 
 def bddvar(name, index=None):
-	print("bddvar")
+	# print("bddvar")
 	r"""Return a unique BDD variable.
 	A Boolean *variable* is an abstract numerical quantity that may assume any
 	value in the set :math:`B = \{0, 1\}`.
@@ -99,7 +99,7 @@ def bddvar(name, index=None):
 
 def _expr2bddnode(expr):
 	"""Convert an expression into a BDD node."""
-	print("_expr2bddnode")
+	# print("_expr2bddnode")
 	if expr.is_zero():
 		return BDDNODEZERO
 	elif expr.is_one():
@@ -118,12 +118,12 @@ def _expr2bddnode(expr):
 
 def expr2bdd(expr):
 	"""Convert an expression into a binary decision diagram."""
-	print("expr2bdd")
+	# print("expr2bdd")
 	return _bdd(_expr2bddnode(expr))
 
 def _bddnode(root, lo, hi):
 	"""Return a unique BDD node."""
-	print("_bddnode")
+	# print("_bddnode")
 	if lo is hi:
 		node = lo
 	else:
@@ -137,7 +137,7 @@ def _bddnode(root, lo, hi):
 
 def _bdd(node):
 	"""Return a unique BDD."""
-	print("_bdd")
+	# print("_bdd")
 	try:
 		bdd = _BDDS[node]
 	except KeyError:
@@ -167,7 +167,7 @@ class BinaryDecisionDiagram(boolfunc.Function):
 	formal equivalence with manually constructed BDDs.
 	"""
 	def __init__(self, node):
-		print("Class BinaryDecisionDiagram")
+		# print("Class BinaryDecisionDiagram")
 		self.node = node
 
 	# Operators
@@ -203,7 +203,7 @@ class BinaryDecisionDiagram(boolfunc.Function):
 
 	def dfs_postorder(self):
 		"""Iterate through nodes in depth first search (DFS) post-order."""
-		print("Class BinaryDecisionDiagram _dfs_postorder")
+		# print("Class BinaryDecisionDiagram _dfs_postorder")
 		yield from _dfs_postorder(self.node, set())
 
 	def to_dot(self, name='BDD'): # pragma: no cover
@@ -212,7 +212,7 @@ class BinaryDecisionDiagram(boolfunc.Function):
 		`DOT language reference <http://www.graphviz.org/content/dot-language>`_
 		for details.
 		"""
-		print("to_dot")
+		# print("to_dot")
 		parts = ['graph', name, '{']
 		for node in self.dfs_postorder():
 			if node is BDDNODEZERO:
@@ -244,7 +244,7 @@ class BDDConstant(BinaryDecisionDiagram):
 	and the BDD zero/one instances are singletons.
 	"""
 	def __init__(self, node, value):
-		print("Class BDDConstant")
+		# print("Class BDDConstant")
 		super(BDDConstant, self).__init__(node)
 		self.value = value
 
@@ -274,14 +274,14 @@ class BDDVariable(boolfunc.Variable, BinaryDecisionDiagram):
 	Use the :func:`bddvar` function instead.
 	"""
 	def __init__(self, bvar):
-		print("Class BDDVariable")
+		# print("Class BDDVariable")
 		boolfunc.Variable.__init__(self, bvar.names, bvar.indices)
 		node = _bddnode(bvar.uniqid, BDDNODEZERO, BDDNODEONE)
 		BinaryDecisionDiagram.__init__(self, node)
 
 def _dfs_postorder(node, visited):
 	"""Iterate through nodes in DFS post-order."""
-	print("_dfs_postorder")
+	# print("_dfs_postorder")
 	if node.lo is not None:
 		yield from _dfs_postorder(node.lo, visited)
 	if node.hi is not None:
